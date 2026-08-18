@@ -6,7 +6,12 @@ product that inspired the result.
 
 > Found you for a reason.
 
-This is **not** a store. It does not replace, modify or read from the Shopify
+**What this is:** a public, responsive **website** — a normal URL you open in a
+browser. It is not a mobile app, there is nothing to download, and it is not
+published through any app store. It is built mobile-first because most visitors
+arrive from Instagram, and it works on tablet and desktop too.
+
+It is also **not a store**. It does not replace, modify or read from the Shopify
 theme. Its only relationship to Shopify is seven outbound product links.
 
 ---
@@ -263,19 +268,76 @@ function — no component changes needed.
 npm run build     # → dist/
 ```
 
-The output is a static site. Host it anywhere and link it from Instagram and
-Shopify — it does not need to live on the Shopify domain.
+The output in `dist/` is a plain static site: HTML, CSS, JS and images. No
+server, no database, no runtime. Any static host can serve it.
 
-Shareable result routes (`/result/plot-twist`) need an SPA rewrite. The build
-covers the common hosts automatically:
+### Deploy on Vercel (recommended)
 
-- **Netlify / Cloudflare Pages** — `public/_redirects`
-- **Vercel** — `vercel.json`
-- **GitHub Pages / Surge** — `dist/404.html` (copied from `index.html` at build)
+The repo is already configured — `vercel.json` sets the framework, build
+command, output directory, SPA rewrites, cache policy and security headers, and
+`.nvmrc` pins Node 22. There is nothing to configure by hand.
 
-On a host that can't rewrite at all, set `routerMode: 'hash'` in
-`src/data/siteConfig.ts`. Links become `/#/result/plot-twist` and work
-everywhere; sharing keeps working automatically.
+1. Go to [vercel.com/new](https://vercel.com/new) and sign in with GitHub.
+2. **Import** `pamecontrerastawrycki-hub/Rosix-find-your-amulet`.
+3. Vercel reads `vercel.json` and fills everything in. Leave the defaults alone.
+4. Click **Deploy**. First build takes about a minute.
+
+You get a live URL immediately (`your-project.vercel.app`). Every push to the
+production branch redeploys automatically, and every pull request gets its own
+preview URL.
+
+**Custom domain** — Vercel → Settings → Domains. A subdomain such as
+`quiz.rosixamuletos.com` is the usual choice, since the apex domain belongs to
+Shopify. Add the CNAME record Vercel shows you at your DNS provider. This does
+not touch the Shopify store.
+
+**After the domain is live**, set one environment variable so link previews on
+Instagram, WhatsApp and Facebook use an absolute image URL:
+
+```
+VITE_SITE_ORIGIN = https://quiz.rosixamuletos.com     (no trailing slash)
+```
+
+Vercel → Settings → Environment Variables → add it, then redeploy. Without it
+the share tags still work; they just use relative URLs, which some scrapers
+handle less reliably.
+
+### Other hosts
+
+The build also emits what other static hosts need, so nothing is Vercel-locked:
+
+| Host | Uses | Already handled |
+| --- | --- | --- |
+| Netlify / Cloudflare Pages | `public/_redirects` | ✅ |
+| GitHub Pages / Surge | `dist/404.html` | ✅ |
+| Anything else | set `routerMode: 'hash'` | one-line change |
+
+Build command `npm run build`, output directory `dist`, Node 20+.
+
+### Why the routing config matters
+
+Shareable links like `/result/plot-twist` are client-side routes — there is no
+such file on disk. The host must serve `index.html` for them, which is what the
+rewrite rules above do. Without one, those links 404 on a hard refresh. On a
+host that cannot rewrite at all, set `routerMode: 'hash'` in
+`src/data/siteConfig.ts`; links become `/#/result/plot-twist` and work
+everywhere.
+
+### Deploy size
+
+`dist/` is about 25 MB, because the eight original PNGs ship alongside the WebP
+derivatives. They exist only as the `<img>` fallback for browsers without WebP
+support — in practice nothing downloads them, and a visitor loads roughly
+11–22 KB per character. Well inside every host's limits.
+
+### Caching
+
+`vercel.json` splits the cache deliberately:
+
+- `/assets/characters/**` — the illustrations, **revalidated on every request**.
+  They are not content-hashed, so when you replace an illustration visitors see
+  the new one immediately rather than a cached copy.
+- everything else in `/assets/**` — content-hashed by Vite, cached for a year.
 
 ### Single-file preview
 

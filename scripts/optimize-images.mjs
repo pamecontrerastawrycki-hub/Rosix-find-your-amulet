@@ -43,10 +43,28 @@ async function isStale(src, dest) {
   return a.mtimeMs > b.mtimeMs;
 }
 
+/**
+ * Never destroy a good manifest.
+ *
+ * The WebP derivatives and the manifest are committed, so a build machine that
+ * cannot run sharp should still ship them. Overwriting the manifest with `{}`
+ * here would silently drop every derivative and serve the 3 MB PNGs instead —
+ * the site would still work, but it would be ~20x heavier on a phone.
+ * So we only ever write an empty manifest when there genuinely isn't one.
+ */
+async function keepExistingManifest(reason) {
+  if (existsSync(manifestPath)) {
+    console.warn(`[rosix:images] ${reason} — keeping the committed manifest and its WebP derivatives.`);
+    return;
+  }
+  console.warn(`[rosix:images] ${reason} and no manifest exists — falling back to the original PNGs.`);
+  await writeFile(manifestPath, '{}\n');
+}
+
 async function main() {
   if (!existsSync(sourceDir)) {
     console.warn(`[rosix:images] ${path.relative(root, sourceDir)} not found — skipping.`);
-    await writeFile(manifestPath, '{}\n');
+    await keepExistingManifest('the characters folder is missing');
     return;
   }
 
@@ -55,8 +73,8 @@ async function main() {
     .sort();
 
   if (files.length === 0) {
-    console.warn('[rosix:images] no PNGs found — writing an empty manifest.');
-    await writeFile(manifestPath, '{}\n');
+    console.warn('[rosix:images] no PNGs found.');
+    await keepExistingManifest('there are no source PNGs');
     return;
   }
 
@@ -64,8 +82,8 @@ async function main() {
   const manifest = {};
 
   if (!sharp) {
-    console.warn('[rosix:images] sharp unavailable — serving original PNGs.');
-    await writeFile(manifestPath, '{}\n');
+    console.warn('[rosix:images] sharp unavailable.');
+    await keepExistingManifest('sharp could not be loaded');
     return;
   }
 

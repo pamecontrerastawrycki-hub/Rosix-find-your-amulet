@@ -18,7 +18,12 @@
       property="og:description"
       content="Girl, don’t overthink it. Five questions and your stone finds you."
     />
-    <meta property="og:image" content="/assets/characters/optimized/00-cover-girl-900.webp" />
+    <!-- VITE_SITE_ORIGIN makes these absolute, which link scrapers prefer.
+         It defaults to empty (see .env), leaving working relative URLs. -->
+    <meta property="og:image" content="%VITE_SITE_ORIGIN%/assets/characters/optimized/00-cover-girl-900.webp" />
+    <meta property="og:image:width" content="900" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="A Rosix girl in a Y2K outfit wearing a handmade natural-stone amulet." />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
