@@ -1,0 +1,101 @@
+/* ===========================================================================
+   ROSIX — motion
+   Pure CSS. No animation library, no video, nothing that delays the quiz.
+   Everything here is decorative and is switched off by prefers-reduced-motion
+   (see tokens.css).
+   =========================================================================== */
+
+/* Character breathing — a few pixels, slow. */
+@keyframes rosix-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Digital-camera flash across the artwork. */
+@keyframes rosix-flash {
+  0%, 88%, 100% { opacity: 0; }
+  90%           { opacity: 0.85; }
+  94%           { opacity: 0.12; }
+  96%           { opacity: 0.5; }
+}
+
+/* Tiny four-point star turning on the spot. */
+@keyframes rosix-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rosix-twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.8) rotate(0deg); }
+  50%      { opacity: 1;    transform: scale(1.1) rotate(45deg); }
+}
+
+/* Amulet glint: a quick shine, then it gets out of the way. The sweep occupies
+   only the first fifth of the cycle so it never sits on top of text you are
+   trying to read. */
+@keyframes rosix-glint {
+  0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  4%   { opacity: 0.6; }
+  16%  { opacity: 0.6; }
+  20%  { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+  100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+}
+
+/* Screen transitions. */
+@keyframes rosix-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes rosix-pop {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Y2K loading bar shimmer. */
+@keyframes rosix-bar {
+  from { background-position: 0 0; }
+  to   { background-position: 28px 0; }
+}
+
+@keyframes rosix-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* --- Applied classes ------------------------------------------------------ */
+.anim-enter {
+  animation: rosix-enter var(--t-slow) var(--ease-out) both;
+}
+
+.anim-pop {
+  animation: rosix-pop var(--t-mid) var(--ease-pop) both;
+}
+
+/* Staggered entrance for result blocks / answer buttons. */
+.anim-stagger > * {
+  animation: rosix-enter 420ms var(--ease-out) both;
+}
+
+.anim-stagger > *:nth-child(1) { animation-delay: 40ms; }
+.anim-stagger > *:nth-child(2) { animation-delay: 90ms; }
+.anim-stagger > *:nth-child(3) { animation-delay: 140ms; }
+.anim-stagger > *:nth-child(4) { animation-delay: 190ms; }
+.anim-stagger > *:nth-child(5) { animation-delay: 240ms; }
+.anim-stagger > *:nth-child(6) { animation-delay: 290ms; }
+.anim-stagger > *:nth-child(7) { animation-delay: 340ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-stagger > * { animation-delay: 0ms !important; }
+}
+
+/* Decorative sparkles scattered around the artwork. */
+.sparkle {
+  position: absolute;
+  color: var(--rosix-gold-light);
+  pointer-events: none;
+  animation: rosix-twinkle 3.4s var(--ease-out) infinite;
+}
+
+.sparkle--slow { animation-duration: 4.6s; }
+.sparkle--turn { animation: rosix-spin 9s linear infinite; }

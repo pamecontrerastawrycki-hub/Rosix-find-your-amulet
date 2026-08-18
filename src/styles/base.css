@@ -1,0 +1,269 @@
+/* ===========================================================================
+   ROSIX — reset, page shell and shared primitives
+   =========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--rosix-brown-soft);
+  background-color: var(--rosix-blush);
+  /* Faint sticker-sheet sparkle. Static, cheap, no repaint. */
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255, 159, 196, 0.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 32%, rgba(255, 159, 196, 0.13) 0 2px, transparent 3px),
+    radial-gradient(circle at 34% 72%, rgba(201, 166, 58, 0.12) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 84%, rgba(255, 159, 196, 0.14) 0 2px, transparent 3px),
+    linear-gradient(180deg, var(--rosix-baby) 0%, var(--rosix-blush) 38%);
+  background-attachment: scroll;
+  background-size: 320px 320px, 420px 420px, 380px 380px, 300px 300px, 100% 100%;
+  /* Never allow sideways scroll on a phone. */
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* --- Focus: always visible, never subtle ---------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--rosix-brown);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --- Screen-reader-only --------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--rosix-brown);
+  color: var(--rosix-blush);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+/* --- App shell ------------------------------------------------------------ */
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding: 0 var(--pad) 3rem;
+}
+
+.shell--wide {
+  max-width: var(--shell-max-wide);
+}
+
+/* The early-2000s window frame that wraps the whole experience. */
+.window {
+  position: relative;
+  margin: 0.75rem auto 0;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius-lg);
+  background: var(--rosix-canvas);
+  box-shadow: var(--shadow-hard);
+  overflow: hidden;
+}
+
+.window__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border-bottom: var(--line) solid var(--rosix-brown);
+  background: linear-gradient(180deg, var(--rosix-baby) 0%, var(--rosix-baby-deep) 100%);
+}
+
+.window__dots {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.window__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: 50%;
+  background: var(--rosix-blush);
+}
+
+.window__dot:nth-child(2) { background: var(--rosix-pink); }
+.window__dot:nth-child(3) { background: var(--rosix-gold-light); }
+
+.window__title {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  color: var(--rosix-brown);
+  text-transform: uppercase;
+}
+
+.window__body {
+  padding: clamp(1.1rem, 4.5vw, 1.75rem) clamp(1rem, 4vw, 1.75rem)
+    clamp(1.5rem, 5vw, 2rem);
+}
+
+/* --- Typography primitives ------------------------------------------------ */
+.display {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  color: var(--rosix-brown);
+  text-wrap: balance;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rosix-brown-faint);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rosix-brown);
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--rosix-blush);
+  --btn-fg: var(--rosix-brown);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem; /* 48px — comfortably over the 44px target */
+  padding: 0.85rem 1.5rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-hard-sm);
+  transition:
+    transform var(--t-fast) var(--ease-pop),
+    box-shadow var(--t-fast) var(--ease-out),
+    background-color var(--t-fast) var(--ease-out);
+}
+
+.btn:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 5px 6px 0 rgba(55, 36, 24, 0.18);
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(55, 36, 24, 0.18);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.btn--primary {
+  --btn-bg: linear-gradient(180deg, var(--rosix-pink) 0%, var(--rosix-hot) 100%);
+  --btn-fg: #fff;
+  font-size: 1.0625rem;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 0 rgba(55, 36, 24, 0.25);
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  box-shadow: none;
+  border-color: rgba(55, 36, 24, 0.35);
+  font-size: 0.8125rem;
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+/* --- Cards ---------------------------------------------------------------- */
+.card {
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.8rem;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: var(--accent-tint);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rosix-brown);
+}

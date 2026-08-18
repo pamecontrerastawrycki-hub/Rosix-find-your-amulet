@@ -1,0 +1,80 @@
+/* ===========================================================================
+   ROSIX — design tokens
+   The whole visual system lives here. Change a token, change the whole site.
+   =========================================================================== */
+
+:root {
+  /* --- Core palette ----------------------------------------------------- */
+  --rosix-blush: #fff8fb;        /* extremely pale pink — page base          */
+  --rosix-canvas: #fdf4f9;       /* EXACT background of the character art    */
+  --rosix-baby: #ffdcea;         /* baby pink                                */
+  --rosix-baby-deep: #ffc2da;    /* baby pink, one step down                 */
+  --rosix-pink: #ff9fc4;         /* the pink that carries the brand          */
+  --rosix-hot: #ff6ea6;          /* accent pop, used sparingly               */
+
+  --rosix-brown: #372418;        /* chocolate — outlines + headings          */
+  --rosix-brown-soft: #6b5344;   /* body copy                                */
+  --rosix-brown-faint: #a08d80;  /* metadata, disabled                       */
+
+  --rosix-gold: #7a6200;         /* antique / dark gold                      */
+  --rosix-gold-light: #c9a63a;
+  --rosix-silver: #c9ccd4;
+  --rosix-silver-light: #eceef2;
+
+  /* Small accents, per the brief. */
+  --rosix-sky: #a8cbe8;
+  --rosix-seafoam: #b7d9c4;
+  --rosix-terracotta: #d68f6c;
+
+  /* --- Per-result accents (overwritten inline by ResultScreen) ---------- */
+  --accent-tint: var(--rosix-baby);
+  --accent: var(--rosix-pink);
+  --accent-stone: var(--rosix-hot);
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-display: 'Archivo', 'Helvetica Neue', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', 'Courier New', monospace;
+
+  /* --- Shape ------------------------------------------------------------ */
+  --line: 2px;
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  /* The signature Y2K sticker shadow: hard, offset, chocolate. */
+  --shadow-hard: 4px 4px 0 rgba(55, 36, 24, 0.16);
+  --shadow-hard-sm: 3px 3px 0 rgba(55, 36, 24, 0.14);
+  --shadow-soft: 0 10px 30px -18px rgba(55, 36, 24, 0.5);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --shell-max: 30rem;      /* 480px — the mobile-first content column */
+  --shell-max-wide: 60rem; /* result screen on tablet/desktop         */
+  --pad: clamp(1rem, 4vw, 1.5rem);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 140ms;
+  --t-mid: 320ms;
+  --t-slow: 560ms;
+}
+
+/* One switch that silences every decorative animation on the site. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 1ms;
+    --t-mid: 1ms;
+    --t-slow: 1ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

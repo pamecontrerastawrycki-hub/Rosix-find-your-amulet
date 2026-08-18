@@ -1,0 +1,765 @@
+/* ===========================================================================
+   ROSIX — screen layouts: intro, quiz, loading, result, customize, modal
+   =========================================================================== */
+
+/* --- Character artwork ---------------------------------------------------- */
+.art {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+  /* Square frame matches the 1:1 source art, so the box never shifts while
+     the image loads and the figure is never cropped. */
+  aspect-ratio: 1 / 1;
+  background: var(--rosix-canvas);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.art__img {
+  width: 100%;
+  height: 100%;
+  /* Non-negotiable: contain, so heads, shoes, bags and accessories survive. */
+  object-fit: contain;
+  object-position: center;
+  transition: opacity var(--t-slow) var(--ease-out);
+}
+
+.art__img--loading {
+  opacity: 0;
+}
+
+.art--float .art__img {
+  animation: rosix-float 6s ease-in-out infinite;
+}
+
+/* Camera flash overlay. */
+.art__flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 62% 30%, #fff 0%, rgba(255, 255, 255, 0) 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.art--flash .art__flash {
+  animation: rosix-flash 7.5s var(--ease-out) infinite;
+}
+
+/* Labelled placeholder shown when an image file is missing or fails to load. */
+.art__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  text-align: center;
+  border: 2px dashed var(--rosix-brown-faint);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--rosix-canvas) 0 12px,
+    #fbeaf2 12px 24px
+  );
+  color: var(--rosix-brown-soft);
+}
+
+.art__placeholder-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rosix-brown);
+}
+
+.art__placeholder-path {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  word-break: break-all;
+  color: var(--rosix-brown-faint);
+}
+
+.art__placeholder-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+/* --- Intro ---------------------------------------------------------------- */
+.intro {
+  text-align: center;
+}
+
+.intro__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.intro__title {
+  font-size: clamp(2rem, 10.5vw, 3.1rem);
+  margin-bottom: 0.9rem;
+}
+
+/* Highlighter swash behind the brand words. */
+.intro__title mark {
+  background: linear-gradient(180deg, transparent 46%, var(--rosix-baby-deep) 46%);
+  color: inherit;
+  padding-inline: 0.08em;
+}
+
+.intro__art {
+  position: relative;
+  max-width: 22rem;
+  margin: 0.25rem auto 1.1rem;
+}
+
+.intro__lines {
+  margin-bottom: 1.4rem;
+}
+
+.intro__primary {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rosix-brown);
+}
+
+.intro__secondary {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--rosix-brown-soft);
+}
+
+.intro__footnote {
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rosix-gold);
+}
+
+/* --- Quiz ----------------------------------------------------------------- */
+.quiz__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.quiz__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem; /* 44px */
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: var(--rosix-blush);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rosix-brown);
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+
+.quiz__back:hover { transform: translateX(-2px); }
+.quiz__back[hidden] { display: none; }
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.progress__count {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--rosix-brown);
+}
+
+.progress__track {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+  max-width: 11rem;
+}
+
+.progress__seg {
+  flex: 1;
+  height: 8px;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  transition: background-color var(--t-mid) var(--ease-out);
+}
+
+.progress__seg--done {
+  background: linear-gradient(180deg, var(--rosix-pink), var(--rosix-hot));
+}
+
+.progress__seg--current {
+  background: var(--rosix-baby-deep);
+}
+
+.quiz__instruction {
+  margin: 0 0 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px dashed var(--rosix-pink);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--rosix-brown);
+  text-align: center;
+}
+
+.question__prompt {
+  font-size: clamp(1.35rem, 6.4vw, 1.85rem);
+  margin-bottom: 1.1rem;
+  text-wrap: balance;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3.5rem; /* 56px */
+  padding: 0.8rem 1rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--rosix-brown);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-hard-sm);
+  transition:
+    transform var(--t-fast) var(--ease-pop),
+    box-shadow var(--t-fast) var(--ease-out),
+    background-color var(--t-fast) var(--ease-out);
+}
+
+.option:hover:not(:disabled) {
+  transform: translate(-1px, -2px);
+  background: var(--rosix-blush);
+  box-shadow: 5px 6px 0 rgba(55, 36, 24, 0.16);
+}
+
+.option:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(55, 36, 24, 0.16);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+/* The answer the visitor previously chose, restored when they go Back. */
+.option--chosen {
+  background: linear-gradient(180deg, var(--rosix-baby) 0%, #fff 70%);
+  border-color: var(--rosix-brown);
+}
+
+.option__key {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: 50%;
+  background: var(--rosix-baby);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.option--chosen .option__key {
+  background: linear-gradient(180deg, var(--rosix-pink), var(--rosix-hot));
+  color: #fff;
+}
+
+/* --- Loading / reveal ----------------------------------------------------- */
+.loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  text-align: center;
+  padding-block: 2rem;
+}
+
+.loading__stars {
+  position: relative;
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.loading__line {
+  min-height: 2.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  letter-spacing: 0.06em;
+  color: var(--rosix-brown);
+}
+
+.loading__line::after {
+  content: '_';
+  margin-left: 2px;
+  animation: rosix-blink 900ms steps(1) infinite;
+}
+
+.loading__bar {
+  position: relative;
+  width: min(18rem, 100%);
+  height: 1.35rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  overflow: hidden;
+}
+
+.loading__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--rosix-pink);
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.55) 0 8px,
+    rgba(255, 255, 255, 0) 8px 14px
+  );
+  background-size: 28px 100%;
+  animation: rosix-bar 700ms linear infinite;
+  transition: width 180ms linear;
+}
+
+.loading__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 0.9rem;
+}
+
+/* --- Result --------------------------------------------------------------- */
+.result__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.result__eyebrow::before,
+.result__eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: var(--accent);
+  max-width: 3.5rem;
+}
+
+.result__title {
+  font-size: clamp(1.9rem, 9vw, 2.85rem);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.result__art {
+  position: relative;
+  max-width: 24rem;
+  margin: 0 auto 1.25rem;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 50% 42%, var(--accent-tint) 0%, var(--rosix-canvas) 68%);
+}
+
+.result__oracle {
+  margin: 0 0 1.35rem;
+  padding: 1.05rem 1.1rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-left: 6px solid var(--accent);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-hard-sm);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--rosix-brown);
+}
+
+.result__oracle span {
+  display: block;
+}
+
+.result__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.fact {
+  padding: 0.8rem 0.9rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius);
+  background: var(--accent-tint);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.fact__label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rosix-brown-soft);
+}
+
+.fact__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: var(--rosix-brown);
+}
+
+.result__concepts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.result__closing {
+  margin: 0 0 1.4rem;
+  font-size: clamp(1.25rem, 5.6vw, 1.6rem);
+  text-align: center;
+  color: var(--rosix-brown);
+}
+
+/* Signature glint sweeping across the closing phrase. */
+.result__closing-inner {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.result__closing-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 45%,
+    rgba(255, 255, 255, 0.45) 55%,
+    transparent 100%
+  );
+  animation: rosix-glint 6s var(--ease-out) infinite;
+  animation-delay: 1s;
+  pointer-events: none;
+}
+
+.result__ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.result__cta-support {
+  margin: -0.15rem 0 0.35rem;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--rosix-brown-soft);
+}
+
+.result__secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.result__secondary-actions .btn {
+  flex: 1 1 12rem;
+}
+
+.result__note {
+  margin-top: 1.1rem;
+  text-align: center;
+}
+
+/* Tablet and up: art beside the copy, still never cropped. */
+@media (min-width: 46rem) {
+  .result__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .result__art {
+    margin: 0;
+    max-width: none;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .result__title,
+  .result__eyebrow {
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .result__eyebrow::before { display: none; }
+  .result__closing { text-align: left; }
+  .result__concepts { justify-content: flex-start; }
+  .result__cta-support { text-align: left; }
+}
+
+/* --- Modal ---------------------------------------------------------------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  /* Closed by default — only [open] gets a display value, so this never
+     overrides the browser's dialog:not([open]) { display: none }. */
+  display: none;
+  place-items: center;
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+}
+
+.modal[open] {
+  display: grid;
+}
+
+.modal::backdrop {
+  background: rgba(55, 36, 24, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.modal__panel {
+  width: min(24rem, 100%);
+  padding: 1.5rem 1.35rem 1.35rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius-lg);
+  background: var(--rosix-blush);
+  box-shadow: var(--shadow-hard);
+  text-align: center;
+  animation: rosix-pop var(--t-mid) var(--ease-pop) both;
+}
+
+.modal__title {
+  font-size: 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.modal__body p {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--rosix-brown-soft);
+}
+
+.modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+}
+
+.modal__stone {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin: 0 auto 0.9rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0%, var(--rosix-baby) 45%, var(--rosix-pink) 100%);
+  box-shadow: var(--shadow-hard-sm);
+  font-size: 1.35rem;
+}
+
+/* --- Customize placeholder ------------------------------------------------ */
+.custom__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.custom__step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.custom__step-num {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1.5px solid var(--rosix-brown);
+  border-radius: 50%;
+  background: var(--rosix-baby);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.custom__step-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rosix-brown);
+}
+
+.custom__step-copy {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  color: var(--rosix-brown-soft);
+}
+
+/* Locked preview of the future choices — deliberately inert. */
+.custom__preview {
+  padding: 1.1rem 1rem;
+  border: 2px dashed var(--rosix-brown-faint);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.custom__group + .custom__group {
+  margin-top: 0.9rem;
+}
+
+.custom__group-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rosix-brown-soft);
+}
+
+.custom__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.custom__choice {
+  padding: 0.35rem 0.75rem;
+  border: 1.5px dashed var(--rosix-brown-faint);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rosix-brown-faint);
+}
+
+.custom__locked {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rosix-gold);
+}
+
+/* --- Toast (clipboard confirmation) --------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 70;
+  padding: 0.7rem 1.1rem;
+  border: var(--line) solid var(--rosix-brown);
+  border-radius: var(--radius-pill);
+  background: var(--rosix-brown);
+  color: var(--rosix-blush);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: var(--shadow-hard-sm);
+  animation: rosix-pop var(--t-mid) var(--ease-pop) both;
+}
+
+/* --- Footer / not found --------------------------------------------------- */
+.page-footer {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.notfound {
+  text-align: center;
+  padding-block: 2rem;
+}
+
+/* The question heading takes programmatic focus each time the question changes
+   (see QuestionCard). It is not a control, so it gets no focus ring — but it
+   stays reachable, which is what screen readers need. */
+.question__prompt:focus {
+  outline: none;
+}

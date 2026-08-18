@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffdcea" />
+
+    <title>Which Rosix Girl Are You? — Rosix Amuletos</title>
+    <meta
+      name="description"
+      content="An interactive Rosix oracle. Five questions, one chapter, one stone. Your amulet found you for a reason."
+    />
+
+    <!-- Social cards, for the Instagram traffic this is built for. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Which Rosix Girl Are You?" />
+    <meta
+      property="og:description"
+      content="Girl, don’t overthink it. Five questions and your stone finds you."
+    />
+    <meta property="og:image" content="/assets/characters/optimized/00-cover-girl-900.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fonts: two families, swapped in so text never blocks the first paint. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=DM+Mono:wght@400;500&display=swap"
+    />
+
+    <!-- Only the cover image is preloaded. Result artwork stays lazy. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/characters/optimized/00-cover-girl-640.webp"
+      imagesrcset="/assets/characters/optimized/00-cover-girl-400.webp 400w, /assets/characters/optimized/00-cover-girl-640.webp 640w, /assets/characters/optimized/00-cover-girl-900.webp 900w"
+      imagesizes="(min-width: 30rem) 22rem, 88vw"
+      fetchpriority="high"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: sans-serif; text-align: center">
+        This Rosix oracle needs JavaScript. Meanwhile, the amulets are at
+        <a href="https://rosixamuletos.com">rosixamuletos.com</a>.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

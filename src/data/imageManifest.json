@@ -1,0 +1,178 @@
+{
+  "/assets/characters/00-cover-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/00-cover-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/00-cover-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/00-cover-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/00-cover-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/01-plot-twist-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/01-plot-twist-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/01-plot-twist-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/01-plot-twist-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/01-plot-twist-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/02-do-not-disturb-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/02-do-not-disturb-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/02-do-not-disturb-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/02-do-not-disturb-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/02-do-not-disturb-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/03-gut-feeling-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/03-gut-feeling-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/03-gut-feeling-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/03-gut-feeling-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/03-gut-feeling-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/04-main-character-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/04-main-character-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/04-main-character-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/04-main-character-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/04-main-character-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/05-no-contact-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/05-no-contact-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/05-no-contact-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/05-no-contact-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/05-no-contact-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/06-soft-power-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/06-soft-power-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/06-soft-power-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/06-soft-power-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/06-soft-power-girl-1280.webp"
+      }
+    ]
+  },
+  "/assets/characters/07-new-era-girl.png": {
+    "width": 2048,
+    "height": 2048,
+    "sources": [
+      {
+        "width": 400,
+        "src": "/assets/characters/optimized/07-new-era-girl-400.webp"
+      },
+      {
+        "width": 640,
+        "src": "/assets/characters/optimized/07-new-era-girl-640.webp"
+      },
+      {
+        "width": 900,
+        "src": "/assets/characters/optimized/07-new-era-girl-900.webp"
+      },
+      {
+        "width": 1280,
+        "src": "/assets/characters/optimized/07-new-era-girl-1280.webp"
+      }
+    ]
+  }
+}
