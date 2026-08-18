@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "WHICH ROSIX GIRL ARE YOU? — an interactive Y2K product-discovery quiz for Rosix Amuletos.",
+  "description": "WHICH ROSIX GIRL ARE YOU? \u2014 an interactive Y2K product-discovery quiz for Rosix Amuletos.",
   "scripts": {
     "dev": "vite",
     "build": "npm run images && tsc -b && vite build && node scripts/spa-fallback.mjs",
@@ -14,7 +14,8 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "npm run lint && npm run typecheck && npm run test"
+    "verify": "npm run lint && npm run typecheck && npm run test",
+    "build:single": "npm run images && tsc -b && node scripts/build-single.mjs"
   },
   "dependencies": {
     "react": "^19.1.1",

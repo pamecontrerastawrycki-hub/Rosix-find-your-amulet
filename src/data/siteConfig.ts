@@ -75,11 +75,8 @@ export const siteConfig: SiteConfig = {
   /** Shopify storefront. Read-only from this app: we only ever link out. */
   shopUrl: 'https://rosixamuletos.com',
 
-  /**
-   * Instagram profile, used by the "TELL ME WHEN" fallback in the custom modal.
-   * PLACEHOLDER — confirm the exact handle before launch.
-   */
-  instagramUrl: 'https://www.instagram.com/rosixamuletos/',
+  /** Instagram profile — the "TELL ME WHEN" fallback in the custom modal. */
+  instagramUrl: 'https://www.instagram.com/rosix.amuletos/',
 
   // --- Intro screen -------------------------------------------------------
   intro: {
@@ -174,7 +171,11 @@ export const siteConfig: SiteConfig = {
   /**
    * 'history' → clean URLs (/result/plot-twist). Needs an SPA rewrite on the
    *             host; `npm run build` emits _redirects, vercel.json and 404.html.
-   * 'hash'    → /#/result/plot-twist. Works on any dumb static host.
+   * 'hash'    → /#/result/plot-twist. Works on any static host that cannot
+   *             rewrite, including the single-file preview build.
+   *
+   * Change the fallback below to change the default. The env var exists only so
+   * `npm run build:single` can override it without editing this file.
    */
-  routerMode: 'history',
+  routerMode: import.meta.env.VITE_ROUTER_MODE === 'hash' ? 'hash' : 'history',
 };

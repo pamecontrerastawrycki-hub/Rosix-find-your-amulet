@@ -44,6 +44,7 @@ Other commands:
 | `npm run dev` | Dev server with hot reload |
 | `npm run build` | Optimises images, typechecks, builds to `dist/` |
 | `npm run build:fast` | Build without re-running the image pipeline |
+| `npm run build:single` | One self-contained HTML file for review (see below) |
 | `npm run preview` | Serve the production build locally |
 | `npm run images` | Regenerate WebP derivatives + image manifest |
 | `npm run lint` | ESLint |
@@ -165,10 +166,10 @@ All seven were verified live against the Rosix Amuletos store:
 | Soft Power | The Softness | `softness-exotic-jasper` | ✅ active |
 | New Era | The Becoming | `the-becoming-rose-quartz` | ✅ active |
 
-> ⚠️ **Every one of these is a one-of-one piece with inventory of 1.** When a
-> chapter sells, its `KEEP THIS CHAPTER` button will land on a sold-out product
-> page. Decide what should happen then — point the URL at a collection, a
-> restock page, or the custom flow — and edit `shopifyUrl` for that result.
+> **Every one of these is a one-of-one piece with inventory of 1.** By design,
+> `KEEP THIS CHAPTER` keeps pointing at its original product even after that
+> product sells out — a sold-out chapter still tells the right story. Pamela
+> updates these links and the inventory after buying new stones.
 
 Note that Soft Power's handle is `softness-exotic-jasper` (no `the-` prefix),
 unlike the other six. That matches the live store.
@@ -276,6 +277,18 @@ On a host that can't rewrite at all, set `routerMode: 'hash'` in
 `src/data/siteConfig.ts`. Links become `/#/result/plot-twist` and work
 everywhere; sharing keeps working automatically.
 
+### Single-file preview
+
+```bash
+npm run build:single    # → preview/rosix-quiz-preview.html
+```
+
+Bundles the real app — same components, same data, same scoring — into one HTML
+file with the CSS, JS and artwork inlined, using hash routing so shareable
+result links work with no server behind them. About 1.7 MB, opens straight from
+a phone or an email attachment. Handy for review; `npm run build` is still the
+real production build.
+
 ---
 
 ## Placeholders still outstanding
@@ -283,16 +296,19 @@ everywhere; sharing keeps working automatically.
 | Where | Value | What's needed |
 | --- | --- | --- |
 | `siteConfig.siteUrl` | `''` | The quiz's own domain/subdomain. Empty falls back to `window.location.origin`, which is correct in most deployments — set it if the site is ever served from more than one origin. |
-| `siteConfig.instagramUrl` | `https://www.instagram.com/rosixamuletos/` | **Unverified guess.** Confirm the real handle — this is where "TELL ME WHEN" currently sends people. |
-| `siteConfig.custom.customUrl` | `''` | Destination for MAKE IT YOURS once custom amulets are live. |
-| `siteConfig.custom.modal.notifyUrl` | `''` | A real waitlist / signup link. While empty, "TELL ME WHEN" falls back to `instagramUrl`. |
-| `siteConfig.custom.depositUrl` | `''` | The reservation deposit link. |
-| `availableStones` | `[]` | Real stone inventory. |
+| `siteConfig.custom.customUrl` | `''` | Destination for MAKE IT YOURS once custom amulets are live. Intentionally empty for now. |
+| `siteConfig.custom.modal.notifyUrl` | `''` | A real waitlist / signup link. Intentionally empty — while empty, "TELL ME WHEN" falls back to `instagramUrl`, which is confirmed correct. |
+| `siteConfig.custom.depositUrl` | `''` | The reservation deposit link. Intentionally empty. |
+| `availableStones` | `[]` | Real stone inventory. Intentionally empty until the stones are bought. |
 | `public/assets/stones/` | empty | Stone photographs, when they exist. |
 | Open Graph image | cover girl derivative | Fine as-is; swap for a purpose-made share card if you want one. |
 
-Everything else — all eight illustrations, all seven Shopify links, every line
-of copy — is final.
+**`customAvailable` stays `false` on purpose.** MAKE IT YOURS opens the
+coming-soon modal, and the four values above stay empty until the custom flow is
+ready. The quiz is complete and shippable in exactly this state.
+
+Everything else — all eight illustrations, all seven Shopify links, the
+Instagram handle, and every line of copy — is final.
 
 ---
 
